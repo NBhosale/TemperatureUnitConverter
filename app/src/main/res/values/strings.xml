@@ -5,6 +5,8 @@
     <string name="value">Value</string>
     <string name="convert">Convert</string>
     <string name="result">Result</string>
+    <string name="enter_a_value">Enter a value</string>
+    <string name="unit_converter">Unit Converter</string>
     <string-array name="temperatureType">
         <item>Celsius</item>
         <item>Fahrenheit</item>

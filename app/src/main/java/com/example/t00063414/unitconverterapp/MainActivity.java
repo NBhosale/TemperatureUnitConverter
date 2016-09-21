@@ -24,11 +24,17 @@ public class MainActivity extends AppCompatActivity {
     private String CelsiusTemperatureString = "Celsius";
     private String FahrenheitTemperatureString = "Fahrenheit";
     private double inputValue = 0;
+    private TextView appTitle;
+    private int counterForColor = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState != null){
+            result = savedInstanceState.getString("result");
+        }
+        titleTimer();
     }
 
     public void convertTemperature(View view){
@@ -41,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
         resultText = (TextView) findViewById(R.id.resultText);
 
         if(userValue.getText().toString().equals("")){
+            resultText.setText(getString(R.string.result));
             Toast.makeText(this, errorResult, Toast.LENGTH_LONG).show();
         }else if(fromSpinnerValue.equalsIgnoreCase(toSpinnerValue)){
+            resultText.setText(getString(R.string.result));
             Toast.makeText(this, sameValueError, Toast.LENGTH_LONG).show();
         }else if(fromSpinnerValue.equalsIgnoreCase(CelsiusTemperatureString)){
             inputValue = Double.parseDouble(userValue.getText().toString());
@@ -55,5 +63,33 @@ public class MainActivity extends AppCompatActivity {
             result = String.valueOf(Celsius);
             resultText.setText(result);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+
+        savedInstanceState.putString("result", result);
+    }
+
+    public void titleTimer(){
+        appTitle = (TextView) findViewById(R.id.appTitle);
+        final Handler handle = new Handler();
+        handle.post(new Runnable() {
+            @Override
+            public void run() {
+                if(counterForColor == 0){
+                    appTitle.setBackgroundResource(R.color.hintColor);
+                    counterForColor++;
+                }else if(counterForColor == 1){
+                    appTitle.setBackgroundResource(R.color.resultColor);
+                    counterForColor++;
+                }else{
+                    appTitle.setBackgroundResource(R.color.valueColor);
+                    counterForColor = 0;
+                }
+
+                handle.postDelayed(this, 1000);
+            }
+        });
     }
 }
